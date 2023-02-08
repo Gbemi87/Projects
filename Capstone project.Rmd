@@ -61,6 +61,7 @@ Analyze smart device usage data in order to gain insight into how consumers use 
 
 ##### Prepare:
 
+##### Gathering Data
 Data that will be collected and used the is **FitBit Fitness Tracker** data gotten from Kaggle. These 18 data sets
 contain personal fitness tracker from thirty fitbit users. Thirty eligible Fitbit users consented to the submission of
 personal tracker data, including minute-level output for physical activity, heart rate, and sleep monitoring. It includes
@@ -76,23 +77,121 @@ Rstudio is also used to perform this analysis due to the numerous datasets being
 
 ```{r}
 install.packages("tidyverse")
-install.packages("dpylr")
+install.packages("dplyr")
 install.packages("janitor")
 install.packages("readr")
 
 library(tidyverse)  
-library(dpylr)  
+library(dplyr)  
 library(janitor)  
 library(readr)  
 ```
+
 ##### Importing Datasets
 
 ```{r}
 setwd("~/Desktop/bellabeat data")
-dailyCalories_merged <- read_csv("dailyCalories_merged.csv")
+daily_calories <- read_csv("dailyCalories_merged.csv")
+daily_activity <- read_csv("dailyActivity_merged.csv")  
+daily_intensities <- read_csv("dailyIntensities_merged.csv")
+daily_steps <- read_csv("dailySteps_merged.csv")
+sleep_day <- read_csv("sleepDay_merged.csv")
+weight <- read_csv("weightLogInfo_merged.csv")
 ```
 
+#### Analysis
 
+##### View Datasets
+The head, glimpse and colnames function are used to clean and explore the dataset.
 
+Activity
 
+```{r}
+head(daily_activity)
+glimpse(daily_activity)
+colnames(daily_activity)
+```
+Intensities
+```{r}
+head(daily_intensities)
+glimpse(daily_intensities)
+colnames(daily_intensities)
+```
 
+Steps
+```{r}
+head(daily_steps)  
+glimpse(daily_steps)
+colnames(daily_steps)
+```
+
+Calories
+```{r}
+head(daily_calories)
+glimpse(daily_calories)
+colnames(daily_calories)
+```
+
+Sleep
+```{r}
+head(sleep_day)
+glimpse(sleep_day)
+colnames(sleep_day)
+```
+
+Weight
+```{r}
+head(weight)
+glimpse(weight)
+colnames(weight)
+```
+
+##### Remove datasets :
+
+A unique Identifier between the datasets daily_activity, daily_calories, daily_intensities, daily_steps, sleep and weight is the Id. Using the function glimpse and column names, it is observed that daily_activity contains columns found in daily_steps, daily_intensities, daily_calories and the same number of rows which is 940 observations. From this obeservation, we will remove the datasets already contained in daily_activity. For the Analysis, daily_activity, Sleep and Weight datasets will be used.
+
+Using this Identifier, the n_distinct function will be used to get exact values and how many participants are in the dataset.
+
+```{r}
+n_distinct(daily_activity$Id)
+n_distinct(sleep_day$Id)
+n_distinct(weight$Id)
+```
+the n_distinct result shows sample sizes quite small to be able make a reliable conclusion or recommendation for Bellabeat, more data will need to be analyzed.
+
+#### Analysis :
+
+###### Activity
+```{r}
+summary(daily_activity)
+```
+
+The activity dataset shows that the mean of very active minutes is 21.16 which is way less than sedentary minutes which is 991.2, although the dataset is limited, this shows that participants are not being proactive in staying active despite wearing the smart watch device. 
+The mean calories is 2304 which is an ideal amount of calories to be burned daily. A woman typically burns between 1800 - 2400 calories without an active lifestyle. At least 3000 calories is needed to lose 1 pound for weight loss. The mean shows that most participants have a sedentary lifestyle, possibly working at a desk and not active.
+Mean total steps is 7638. The range of steps between a sedentary lifestyle and an active lifestyle is 5000 - more than 10000 steps, so the mean total steps shows that users have a fairly active lifestyle.
+
+###### Sleep 
+```{r}
+summary(sleep_day)
+```
+The maximum value of total sleep records is 3
+
+###### Weight
+```{r}
+summary(weight)
+```
+
+```{r}
+ggplot(data=daily_activity , aes(x=SedentaryMinutes, y=Calories)) + geom_point() + stat_smooth(method =lm) + labs(title="Relationship between Sedentary minutes and daily calories burned",caption="The number of Calories needed to lose one pound is 3000")
+```
+
+```{r}
+ggplot(data=daily_activity, aes(x=Calories, y=TotalDistance)) + geom_point(color = 'red') + stat_smooth() + labs(title="Relationship between Total Distance travelled and daily calories burned",caption="The number of Calories needed to lose one pound is 3000")
+```
+
+```{r}
+ggplot(data= sleep_day, aes(x=TotalTimeInBed, y=TotalMinutesAsleep)) + geom_point(color = 'red') + stat_smooth() + labs(title="Total Time in Bed and Total Minutes asleep")
+```
+```{r}
+ggplot(data=weight, aes(x=WeightKg, y=BMI)) + geom_point(color = 'red') + stat_smooth() + labs(title="Relationship between Weight in Kg and BMI",caption="The number of Calories needed to lose one pound is 3000")
+```
