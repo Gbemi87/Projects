@@ -195,3 +195,11 @@ ggplot(data= sleep_day, aes(x=TotalTimeInBed, y=TotalMinutesAsleep)) + geom_poin
 ```{r}
 ggplot(data=weight, aes(x=WeightKg, y=BMI)) + geom_point(color = 'red') + stat_smooth() + labs(title="Relationship between Weight in Kg and BMI",caption="The number of Calories needed to lose one pound is 3000")
 ```
+The Dataset has a really small sample size and is not able to give good predictions for what trends exist in smart device usage seeing as there werent enough participants logging in their activity info consistently.
+
+##### Recommendations
+
+- Bellabeat can endeavour to make its app very engaging for the consumer like having feautures that allows friends to interact with each other within the app
+-Have deals for its Bellabeat Membership where there could be promotion deals that encourage consumers inviting friends and family
+-Have a good social media presence to get more awareness on what bellebeat is about and products they carry. 
+-Consumers need to see the need and effectual change having a smart watch device can add to their lives, having giveaways or promotional value to get consumers invested in giving their testimonials is beneficial.
